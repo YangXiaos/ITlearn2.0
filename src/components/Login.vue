@@ -67,7 +67,7 @@
                 name="userPwd" type="password" placeholder="密码">
               <span v-show="errors.has('userPwd')" class="help is-danger">{{ errors.first('userPwd') }}</span>
             </p> -->
-            
+
             <div class="actions">
               <div class="buttons">
                 <p class="submit">
@@ -90,9 +90,9 @@
 </template>
 
 <script>
-  import {
-    mapActions
-  } from 'vuex'
+  import {mapActions} from 'vuex';
+  import config from '../../config/url.config';
+
   // import axios from 'axios'
   export default {
     name: 'login',
@@ -131,9 +131,9 @@
             })
             .then(response => {
               let res = response.data;
-              if (res.status == "1") {
+              if (res.status === "1") {
                 this.userLogin(res);
-                this.$message.success(`${res.message}`)
+                this.$message.success(`${res.message}`);
                 //登录成功，跳转到首页
                 //this.$router.push({name:'Home'})
                 this.$router.push('/')
@@ -149,55 +149,9 @@
               this.$message.error(`邮箱或密码有误，请重新填写！`);
               return false;
           }
-          
+
         });
-
-
-          
-
       },
-
-      ////关闭注册验证
-      // register() {
-      //   let user = this.formRegister;
-      //   let formData = {
-      //     userName: user.userName,
-      //     userEmail: user.userEmail,
-      //     userPwd: user.userPwd
-      //   };
-        
-      //   this.$validator.validateAll().then((result) => {
-      //     if (result) { // eslint-disable-next-line
-      //       this.$http.post('/users/register', {
-      //       userName: formData.userName,
-      //       userEmail: formData.userEmail,
-      //       userPwd: formData.userPwd
-      //     })
-      //     .then(response => {
-      //       let res = response.data;
-      //       if (res.status == "1") {
-      //         this.userLogin(res);
-      //         this.$message.success(`${res.message}`)
-      //         //登录成功，跳转到首页
-      //         //this.$router.push({name:'Home'})
-      //         this.$router.push('/')
-      //       } else {
-      //         this.$message.error(`${res.message}`);
-      //         return false;
-      //       }
-      //     })
-      //     .catch(err => {
-      //       this.$message.error(`${err.message}`, 'ERROR!');
-      //     })
-      //     } else {
-      //         this.$message.error(`邮箱或密码有误，请重新填写！`);
-      //         return false;
-      //     }
-          
-      //   });
-      // }
-      ////关闭注册验证
-
 
       register() {
         let user = this.formRegister;
@@ -206,36 +160,41 @@
           userEmail: user.userEmail,
           userPwd: user.userPwd
         };
-        
-        // this.$validator.validateAll().then((result) => {
-          // if (result) { // eslint-disable-next-line
-            this.$http.post('/users/register', {
-            userName: formData.userName,
-            userEmail: formData.userEmail,
-            userPwd: formData.userPwd
-          })
-          .then(response => {
-            let res = response.data;
-            if (res.status == "1") {
-              this.userLogin(res);
-              this.$message.success(`${res.message}`)
-              //登录成功，跳转到首页
-              //this.$router.push({name:'Home'})
-              this.$router.push('/')
-            } else {
-              this.$message.error(`${res.message}`);
-              return false;
-            }
-          })
-          .catch(err => {
-            this.$message.error(`${err.message}`, 'ERROR!');
-          })
-          // } else {
-          //     this.$message.error(`邮箱或密码有误，请重新填写！`);
-          //     return false;
-          // }
-          
-        // });
+
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+
+            // eslint-disable-next-line
+            this.$http.post(config.user, {
+                userName: formData.userName,
+                userEmail: formData.userEmail,
+                userPwd: formData.userPwd
+              })
+              .then(response => {
+                let res = response.data;
+
+                if (res.status === "1") {
+                  this.userLogin(res);
+                  this.$message.success(`${res.message}`);
+                  this.$router.push('/');
+                  //登录成功，跳转到首页
+                  //this.$router.push({name:'Home'})
+                } else {
+                  this.$message.error(`${res.message}`);
+                  return false;
+                }
+              })
+              .catch(err => {
+                // 异常捕获
+                this.$message.error(`${err.message}`, 'ERROR!');
+              });
+
+          } else {
+            this.$message.error(`邮箱或密码有误，请重新填写！`);
+            return false;
+          }
+
+        });
       }
 
       // login(){
@@ -263,6 +222,47 @@
       //             this.$message.error(`ai${err.message}`,'ERROR!');
       //     })
       //     },
+
+      ////关闭注册验证
+      // register() {
+      //   let user = this.formRegister;
+      //   let formData = {
+      //     userName: user.userName,
+      //     userEmail: user.userEmail,
+      //     userPwd: user.userPwd
+      //   };
+
+      //   this.$validator.validateAll().then((result) => {
+      //     if (result) { // eslint-disable-next-line
+      //       this.$http.post('/users/register', {
+      //       userName: formData.userName,
+      //       userEmail: formData.userEmail,
+      //       userPwd: formData.userPwd
+      //     })
+      //     .then(response => {
+      //       let res = response.data;
+      //       if (res.status == "1") {
+      //         this.userLogin(res);
+      //         this.$message.success(`${res.message}`)
+      //         //登录成功，跳转到首页
+      //         //this.$router.push({name:'Home'})
+      //         this.$router.push('/')
+      //       } else {
+      //         this.$message.error(`${res.message}`);
+      //         return false;
+      //       }
+      //     })
+      //     .catch(err => {
+      //       this.$message.error(`${err.message}`, 'ERROR!');
+      //     })
+      //     } else {
+      //         this.$message.error(`邮箱或密码有误，请重新填写！`);
+      //         return false;
+      //     }
+
+      //   });
+      // }
+      ////关闭注册验证
     }
   }
 
