@@ -1,9 +1,9 @@
-
-'use strict'
+'use strict';
 // Template version: 1.1.3
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require('path')
+const path = require('path');
+const urlConfig = require('./url.config');
 
 module.exports = {
   build: {
@@ -33,32 +33,26 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/sharelink':{
-        target:'http://localhost:3000',
+      '/sharelink': {
+        target: 'http://localhost:3000',
       },
-      '/sharelink/submit':{
-        target:'http://localhost:3000',
+      '/sharelink/submit': {
+        target: 'http://localhost:3000',
       },
-      '/sharelink/addlovelink':{
-        target:'http://localhost:3000',
+      '/sharelink/addlovelink': {
+        target: 'http://localhost:3000',
       },
-      '/users/login':{
-        target:'http://localhost:3000'
+      '/tags': {
+        target: 'http://localhost:3000'
       },
-      '/users/*':{
-        target:'http://localhost:3000'
+      '/group/*': {
+        target: 'http://localhost:3000'
       },
-      '/tags':{
-        target:'http://localhost:3000'
+      '/topic/*': {
+        target: 'http://localhost:3000'
       },
-      '/group/*':{
-        target:'http://localhost:3000'
-      },
-      '/topic/*':{
-        target:'http://localhost:3000'
-      },
-      '/comment/*':{
-        target:'http://localhost:3000'
+      '/comment/*': {
+        target: 'http://localhost:3000'
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
@@ -68,4 +62,10 @@ module.exports = {
     // just be aware of this issue when enabling this option.
     cssSourceMap: false
   }
+};
+
+
+// 配置url
+for (let key in urlConfig) {
+    module.exports["dev"]["proxyTable"][urlConfig[key]] = {target: 'http://localhost:3000'};
 }
